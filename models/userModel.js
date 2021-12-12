@@ -29,11 +29,11 @@ const getUser = async (id, next) => {
   }
 };
 
-const addUser = async (name, email, password, next) => {
+const addUser = async (username, email, password, next) => {
   try {
     const [rows] = await promisePool.execute(
       "INSERT INTO user (username, email, password) VALUES (?, ?, ?)",
-      [name, email, password]
+      [username, email, password]
     );
     return rows;
   } catch (e) {
@@ -42,8 +42,8 @@ const addUser = async (name, email, password, next) => {
   }
 };
 
-const deletePost = async (id, owner_id, role, next) => {
-  let sql = "DELETE FROM user WHERE id = ? AND owner = ?";
+const deleteUser = async (id, owner_id, role, next) => {
+  let sql = "DELETE FROM user WHERE id = ? AND username = ?";
   let params = [id, owner_id];
   if (role === 0) {
     sql = "DELETE FROM user WHERE id = ?";
@@ -76,6 +76,6 @@ module.exports = {
   getAllUsers,
   getUser,
   addUser,
-  deletePost,
+  deleteUser,
   getUserLogin,
 };

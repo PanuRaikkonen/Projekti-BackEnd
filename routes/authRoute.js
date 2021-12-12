@@ -8,9 +8,9 @@ router.post("/login", login);
 
 router.post(
   "/register",
-  body("name").isLength({ min: 3 }).escape(),
+  body("username").isLength({ min: 3 }).escape(),
   body("email").isEmail(),
-  body("passwd").matches("(?=.[A-Z]).{4,}"),
+  body("password").isLength({ min: 4 }).escape(),
   user_post
 );
 
