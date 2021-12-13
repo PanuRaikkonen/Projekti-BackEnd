@@ -101,12 +101,11 @@ const post_put = async (req, res, next) => {
     //   owner = req.owner.body;
     // }
 
-    const owner = req.user.role === 0 ? req.body.owner : req.user.id;
+    const owner = req.user.role === 1 ? req.body.owner : req.user.id;
 
     const tulos = await modifyPost(
       title,
       content,
-      owner,
       req.params.id,
       req.user.role,
       next
