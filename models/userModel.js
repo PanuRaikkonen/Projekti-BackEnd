@@ -1,5 +1,4 @@
 "use strict";
-const e = require("express");
 const pool = require("../database/db");
 const { httpError } = require("../utils/errors");
 const promisePool = pool.promise();
@@ -45,7 +44,7 @@ const addUser = async (username, email, password, next) => {
 const deleteUser = async (id, owner_id, role, next) => {
   let sql = "DELETE FROM user WHERE id = ? AND username = ?";
   let params = [id, owner_id];
-  if (role === 0) {
+  if (role === 1) {
     sql = "DELETE FROM user WHERE id = ?";
     params = [id];
   }
@@ -53,7 +52,7 @@ const deleteUser = async (id, owner_id, role, next) => {
     const [rows] = await promisePool.execute(sql, params);
     return rows;
   } catch (e) {
-    console.error("deletePost error", e.message);
+    console.error("deleteUser error", e.message);
     next(httpError("Database error", 500));
   }
 };
