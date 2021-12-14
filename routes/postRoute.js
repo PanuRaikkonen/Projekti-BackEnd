@@ -4,11 +4,14 @@ const express = require("express");
 const { body } = require("express-validator");
 const multer = require("multer");
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype.includes("image")) {
-    cb(null, true);
-  } else {
-    cb(null, false);
+  if (file.filename) {
+    if (file.mimetype.includes("image")) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+    }
   }
+  cb(null, true);
 };
 const upload = multer({ dest: "./uploads/", fileFilter });
 const {
@@ -24,7 +27,7 @@ router
   .route("/")
   .get(post_list_get)
   .post(
-    upload.single("post"),
+    upload.single("img"),
     body("title").notEmpty().escape(),
     body("content").notEmpty().escape(),
     post_post
@@ -35,7 +38,7 @@ router
   .delete(post_delete)
   .put(
     body("title").notEmpty().escape(),
-    body("content").notEmpty().escape,
+    body("content").notEmpty().escape(),
     post_put
   );
 

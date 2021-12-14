@@ -48,36 +48,31 @@ const post_post = async (req, res, next) => {
     return;
   }
 
-  if (!req.file) {
-    const err = httpError("file not valid", 400);
-    next(err);
-    return;
-  }
-
   try {
-    const thumb = await makeThumbnail(
-      req.file.path,
-      "./thumbnails/" + req.file.img
-    );
+    let tiedosto = "";
+    if (req.file) {
+      await makeThumbnail(req.file.path, "./thumbnails/" + req.file.filename);
+      tiedosto = req.file.filename;
+    }
 
-    const { title, content } = req.body;
+    const { title, content, category } = req.body;
 
     const tulos = await addPost(
       title,
       content,
+      tiedosto,
       req.user.id,
-      req.file.img,
+      category,
       next
     );
-    if (thumb) {
-      if (tulos.affectedRows > 0) {
-        res.json({
-          message: "post added",
-          post_id: tulos.insertId,
-        });
-      } else {
-        next(httpError("No post inserted", 400));
-      }
+
+    if (tulos.affectedRows > 0) {
+      res.json({
+        message: "post added",
+        post_id: tulos.insertId,
+      });
+    } else {
+      next(httpError("No post inserted", 400));
     }
   } catch (e) {
     console.log("post_post error", e.message);

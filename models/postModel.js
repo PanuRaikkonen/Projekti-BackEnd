@@ -54,11 +54,11 @@ const getPost = async (id, next) => {
   }
 };
 
-const addPost = async (title, content, img, created, next) => {
+const addPost = async (title, content, img, owner, category, next) => {
   try {
     const [rows] = await promisePool.execute(
-      "INSERT INTO post (title, content, img, created) VALUES (?, ?, ?, ?)",
-      [title, content, img, created]
+      "INSERT INTO post (title, content, img, owner, category) VALUES (?, ?, ?, ?, ?)",
+      [title, content, img, owner, category]
     );
     return rows;
   } catch (e) {
