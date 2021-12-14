@@ -20,6 +20,7 @@ const getAllPosts = async (next) => {
 	FROM post 
 	JOIN user ON
 	post.owner = user.id
+  ORDER BY created DESC
  `);
     return rows;
   } catch (e) {
@@ -45,7 +46,8 @@ const getPost = async (id, next) => {
 	FROM post 
 	JOIN user ON 
 	post.owner = user.id
-	WHERE post.id = ?`,
+	WHERE post.id = ?
+  ORDER BY created DESC`,
       [id]
     );
     return rows;
