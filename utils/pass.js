@@ -1,11 +1,11 @@
-"use strict";
-const passport = require("passport");
-const Strategy = require("passport-local").Strategy;
-const passportJWT = require("passport-jwt");
-const bcrypt = require("bcryptjs");
+'use strict';
+const passport = require('passport');
+const Strategy = require('passport-local').Strategy;
+const passportJWT = require('passport-jwt');
+const bcrypt = require('bcryptjs');
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJwt = passportJWT.ExtractJwt;
-const { getUserLogin } = require("../models/userModel");
+const { getUserLogin } = require('../models/userModel');
 
 // local strategy for username password login
 passport.use(
@@ -13,14 +13,14 @@ passport.use(
     const params = [username];
     try {
       const [user] = await getUserLogin(params);
-      console.log("Local strategy", user); // result is binary row
+      console.log('Local strategy', user); // result is binary row
       if (!user) {
         return done(null, false);
       }
       if (!bcrypt.compareSync(password, user.password)) {
         return done(null, false);
       }
-      return done(null, { ...user }, { message: "Logged In Successfully" }); // use spread syntax to create shallow copy to get rid of binary row type
+      return done(null, { ...user }, { message: 'Logged In Successfully' }); // use spread syntax to create shallow copy to get rid of binary row type
     } catch (err) {
       return done(err);
     }

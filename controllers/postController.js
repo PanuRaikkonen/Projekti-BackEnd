@@ -1,5 +1,5 @@
-"use strict";
-const { validationResult } = require("express-validator");
+'use strict';
+const { validationResult } = require('express-validator');
 // postController
 const {
   getAllPosts,
@@ -7,9 +7,9 @@ const {
   addPost,
   modifyPost,
   deletePost,
-} = require("../models/postModel");
-const { httpError } = require("../utils/errors");
-const { makeThumbnail } = require("../utils/resize");
+} = require('../models/postModel');
+const { httpError } = require('../utils/errors');
+const { makeThumbnail } = require('../utils/resize');
 
 const post_list_get = async (req, res, next) => {
   try {
@@ -17,11 +17,11 @@ const post_list_get = async (req, res, next) => {
     if (posts.length > 0) {
       res.json(posts);
     } else {
-      next("No posts found", 404);
+      next('No posts found', 404);
     }
   } catch (e) {
-    console.log("post_list_get error", e.message);
-    next(httpError("internal server error", 500));
+    console.log('post_list_get error', e.message);
+    next(httpError('internal server error', 500));
   }
 };
 
@@ -31,27 +31,27 @@ const post_get = async (req, res, next) => {
     if (vastaus.length > 0) {
       res.json(vastaus.pop());
     } else {
-      next(httpError("No post found", 404));
+      next(httpError('No post found', 404));
     }
   } catch (e) {
-    console.log("post_get error", e.message);
-    next(httpError("internal server error", 500));
+    console.log('post_get error', e.message);
+    next(httpError('internal server error', 500));
   }
 };
 
 const post_post = async (req, res, next) => {
-  console.log("post_post", req.body, req.file, req.user);
+  console.log('post_post', req.body, req.file, req.user);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log("post_post validation", errors.array());
-    next(httpError("invalid data", 400));
+    console.log('post_post validation', errors.array());
+    next(httpError('invalid data', 400));
     return;
   }
 
   try {
-    let tiedosto = "";
+    let tiedosto = '';
     if (req.file) {
-      await makeThumbnail(req.file.path, "./thumbnails/" + req.file.filename);
+      await makeThumbnail(req.file.path, './thumbnails/' + req.file.filename);
       tiedosto = req.file.filename;
     }
 
@@ -68,24 +68,24 @@ const post_post = async (req, res, next) => {
 
     if (tulos.affectedRows > 0) {
       res.json({
-        message: "post added",
+        message: 'post added',
         post_id: tulos.insertId,
       });
     } else {
-      next(httpError("No post inserted", 400));
+      next(httpError('No post inserted', 400));
     }
   } catch (e) {
-    console.log("post_post error", e.message);
-    next(httpError("internal server error", 500));
+    console.log('post_post error', e.message);
+    next(httpError('internal server error', 500));
   }
 };
 
 const post_put = async (req, res, next) => {
-  console.log("post_put", req.body, req.params);
+  console.log('post_put', req.body, req.params);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log("post_put validation", errors.array());
-    next(httpError("invalid data", 400));
+    console.log('post_put validation', errors.array());
+    next(httpError('invalid data', 400));
     return;
   }
   // pvm VVVV-KK-PP esim 2010-05-28
@@ -107,15 +107,15 @@ const post_put = async (req, res, next) => {
     );
     if (tulos.affectedRows > 0) {
       res.json({
-        message: "post modified",
+        message: 'post modified',
         id: tulos.insertId,
       });
     } else {
-      next(httpError("No post modified", 400));
+      next(httpError('No post modified', 400));
     }
   } catch (e) {
-    console.log("post_put error", e.message);
-    next(httpError("internal server error", 500));
+    console.log('post_put error', e.message);
+    next(httpError('internal server error', 500));
   }
 };
 
@@ -129,15 +129,15 @@ const post_delete = async (req, res, next) => {
     );
     if (vastaus.affectedRows > 0) {
       res.json({
-        message: "post deleted",
+        message: 'post deleted',
         id: vastaus.insertId,
       });
     } else {
-      next(httpError("No post found", 404));
+      next(httpError('No post found', 404));
     }
   } catch (e) {
-    console.log("post_delete error", e.message);
-    next(httpError("internal server error", 500));
+    console.log('post_delete error', e.message);
+    next(httpError('internal server error', 500));
   }
 };
 
