@@ -7,7 +7,7 @@ const {
 } = require('../controllers/categoryController');
 const router = express.Router();
 
-router.get('/', category_list_get);
+router.route('/').get(category_list_get);
 
 router.route('/:id').get(category_get);
 
