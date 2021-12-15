@@ -18,7 +18,8 @@ const getAllUsers = async (next) => {
 const getUser = async (id, next) => {
   try {
     const [rows] = await promisePool.execute(
-      'SELECT user.id, username, email, role, user.created, user.img FROM user INNER JOIN post ON post.owner = user.id WHERE user.id = ?',
+      // 'SELECT user.id, username, email, role, user.created, user.img, post.* FROM user INNER JOIN post ON post.owner = user.id WHERE user.id = ?',
+      'SELECT post.id, post.title, post.content, post.img, post.created, post.category, post.owner, post.parent, user.username AS ownername FROM post INNER JOIN user ON post.owner = user.id where user.id = ? ORDER BY created DESC',
       [id]
     );
     return rows;

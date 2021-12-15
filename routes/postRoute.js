@@ -16,23 +16,27 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({ dest: './uploads/', fileFilter });
 const {
   post_list_get,
-  every_post_get,
   post_get,
   post_post,
   post_put,
   post_delete,
+  post_user_get,
 } = require('../controllers/postController');
 const router = express.Router();
 
 router
   .route('/:id')
   .get(post_list_get)
+  // .get(post_user_get)
   .post(
     upload.single('img'),
     body('title').notEmpty().escape(),
     body('content').notEmpty().escape(),
     post_post
   );
+
+router.route('/:userPost').get(post_user_get);
+
 router
   .route('/:id/')
   .get(post_get)

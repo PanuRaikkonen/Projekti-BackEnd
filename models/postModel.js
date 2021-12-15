@@ -32,6 +32,30 @@ const getAllPosts = async (id, next) => {
     next(httpError('Database error', 500));
   }
 };
+const getUserPosts = async (id, next) => {
+  try {
+    const [rows] = await promisePool.execute(
+      `SELECT
+    post.id, 
+    title,
+    content,
+    post.img,
+    post.created,
+    post.category,
+    post.owner,
+    user.username AS ownername
+    FROM post 
+    INNER JOIN user
+    ON post.owner = user.id
+    WHERE user.id = post.owner
+    ORDER BY created DESC`,
+      [id]
+    );
+  } catch (e) {
+    console.error('getUserPosts error', e.message);
+    next(httpError('Database error', 500));
+  }
+};
 
 const getPost = async (id, next) => {
   try {
@@ -110,6 +134,7 @@ const deletePost = async (id, owner_id, role, next) => {
 
 module.exports = {
   getAllPosts,
+  getUserPosts,
   getPost,
   addPost,
   modifyPost,

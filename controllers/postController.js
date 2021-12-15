@@ -3,6 +3,7 @@ const { validationResult } = require('express-validator');
 // postController
 const {
   getAllPosts,
+  getUserPosts,
   getPost,
   addPost,
   modifyPost,
@@ -21,6 +22,19 @@ const post_list_get = async (req, res, next) => {
     }
   } catch (e) {
     console.log('post_list_get error', e.message);
+    next(httpError('internal server error', 500));
+  }
+};
+const post_user_get = async (req, res, next) => {
+  try {
+    const user_posts = await getUserPosts(req.params.id, next);
+    if (user_posts.length > 0) {
+      res.json(user_posts);
+    } else {
+      next('No users posts found', 404);
+    }
+  } catch (e) {
+    console.log('post_user_get error', e.message);
     next(httpError('internal server error', 500));
   }
 };
@@ -143,6 +157,7 @@ const post_delete = async (req, res, next) => {
 
 module.exports = {
   post_list_get,
+  post_user_get,
   post_get,
   post_post,
   post_put,
