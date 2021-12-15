@@ -27,10 +27,10 @@ const router = express.Router();
 router
   .route('/:id')
   .get(post_list_get)
-  // .get(post_user_get)
+  .delete(post_delete)
   .post(
     upload.single('img'),
-    body('title').notEmpty().escape(),
+    body('title'),
     body('content').notEmpty().escape(),
     post_post
   );
@@ -38,9 +38,8 @@ router
 router.route('/:userPost').get(post_user_get);
 
 router
-  .route('/:id/')
+  .route('/:id/:postid')
   .get(post_get)
-  .delete(post_delete)
   .put(
     body('title').notEmpty().escape(),
     body('content').notEmpty().escape(),
