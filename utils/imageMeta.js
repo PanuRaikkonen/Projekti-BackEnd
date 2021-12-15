@@ -1,5 +1,5 @@
-'use strict';
-const ExifImage = require('exif').ExifImage;
+"use strict";
+const ExifImage = require("exif").ExifImage;
 
 const getCoordinates = (imgFile) => {
   // imgFile = full path to uploaded image
@@ -11,7 +11,7 @@ const getCoordinates = (imgFile) => {
         if (error) {
           reject(error);
         } else {
-          console.log('exif data', exifData);
+          console.log("exif data", exifData);
           try {
             const lon = gpsToDecimal(
               exifData.gps.GPSLongitude,
@@ -42,7 +42,7 @@ const gpsToDecimal = (gpsData, hem) => {
     parseFloat(gpsData[0]) +
     parseFloat(gpsData[1] / 60) +
     parseFloat(gpsData[2] / 3600);
-  return hem === 'S' || hem === 'W' ? (d *= -1) : d;
+  return hem === "S" || hem === "W" ? (d *= -1) : d;
 };
 
 module.exports = {

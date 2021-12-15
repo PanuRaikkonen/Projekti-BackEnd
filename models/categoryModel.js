@@ -7,7 +7,7 @@ const promisePool = pool.promise();
 const getAllCategory = async (next) => {
   try {
     const [rows] = await promisePool.execute(
-      'SELECT category.id, name, description FROM category JOIN post ON category.id = post.category GROUP BY name'
+      'SELECT category.id, name, description FROM category JOIN post ON category.id = post.category GROUP BY name DESC'
     );
     return rows;
   } catch (e) {
@@ -19,9 +19,7 @@ const getAllCategory = async (next) => {
 const getCategory = async (id, next) => {
   try {
     const [rows] = await promisePool.execute(
-      'SELECT id, name, description FROM category JOIN post ON category.id = post.category WHERE id = ? GROUP BY name',
-      [id]
-    );
+      'SELECT name, description FROM category WHERE id = ?', [id]);
     return rows;
   } catch (e) {
     console.error('getCategory error', e.message);
